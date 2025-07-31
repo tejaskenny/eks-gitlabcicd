@@ -1,0 +1,15 @@
+apiVersion: apps/V1
+kind: Service
+metadata:
+  name: api-service
+  labels:
+    env: "prod"
+    setup: api
+spec:
+  type: ClusterIP
+  selector:
+    env: "prod"
+    setup: api 
+  ports:
+    - port: 80
+      targetPort: 80

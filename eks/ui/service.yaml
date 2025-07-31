@@ -1,0 +1,15 @@
+apiVersion: apps/V1
+kind: Service
+metadata:
+  name: ui-service
+  labels:
+    env: "prod"
+    setup: "ui"
+spec:
+  type: ClusterIP
+  selector:
+    env: "prod"
+    setup: ui
+  ports:
+    - port: 80
+      targetPort: 80
