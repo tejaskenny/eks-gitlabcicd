@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  employee-api:
+    build:
+      context: ./jdbc-api-demo
+    container_name: employee-api
+    ports:
+      - "7080:7080"
+    volumes:
+      - ./jdbc-api-demo/config.properties:/app/config.properties
+    networks:
+      - employee-net
+    depends_on:
+      - mysql
+
+  employee-ui:
+    build:
+      context: ./employee-ui-simple
+    container_name: employee-ui
+    ports:
+      - "7000:80"
+    volumes:
+      - ./employee-ui-simple/config/config.js:/usr/share/nginx/html/config.js
+    networks:
+      - employee-net
+
+  employee-api-proxy:
+    build:
+      context: ./employee-api-proxy
+    container_name: employee-api-proxy
+    ports:
+      - "7001:80"
+    environment:
+      - API_BACKEND_URL=http://employee-api:7080
+    networks:
+      - employee-net
+    depends_on:
+      - employee-api
+
+  mysql:
+    image: mysql:5.7
+    container_name: employee-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: tejas
+      MYSQL_PASSWORD: secretpass
+    ports:
+      - "3336:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - employee-net
+
+volumes:
+  mysql-data:
+networks:
+  employee-net:
+    driver: bridge
+

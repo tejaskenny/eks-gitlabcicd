@@ -1,0 +1,44 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Entry</title>
+   <script src="config.js"></script>
+</head>
+<body>
+  <h2>Add Employee</h2>
+  <form id="employeeForm">
+    Name: <input type="text" name="name" required><br><br>
+    Address: <input type="text" name="address" required><br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    document.getElementById('employeeForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = {
+        name: formData.get('name'),
+        address: formData.get('address')
+      };
+
+      try {
+	  const res = await fetch(`${API_BASE_URL}/add`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const msg = await res.text();
+        document.getElementById('response').innerText = msg;
+      } catch (err) {
+        document.getElementById('response').innerText = 'Error submitting data';
+      }
+    });
+  </script>
+</body>
+</html>
+
