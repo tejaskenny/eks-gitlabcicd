@@ -31,3 +31,11 @@ spec:
           env:
             - name: configs
               value: "prod"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/config.js
+              subPath: config.js
+      volumes:
+        - name: config-volume
+          configMap:
+            name: employee-ui-config
