@@ -16,6 +16,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: service
+            name: ui-service
             port: 
               number: 80
