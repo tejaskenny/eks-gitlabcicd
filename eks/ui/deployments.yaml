@@ -5,7 +5,7 @@ metadata:
   labels: 
     env: prod
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       env: prod
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: ui
-          image: nginx
+          image: test
           ports:
             - containerPort: 80
           resources:
@@ -31,4 +31,3 @@ spec:
           env:
             - name: configs
               value: "prod"
-      
