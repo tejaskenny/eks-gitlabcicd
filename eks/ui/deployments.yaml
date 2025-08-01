@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
-namespace: famosdots
 metadata:
   name: ui-deploy
+  namespace: famosdots
   labels: 
     env: prod
 spec:
