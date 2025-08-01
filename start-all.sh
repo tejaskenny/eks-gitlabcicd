@@ -1,5 +1,5 @@
 #!/bin/bash
-docker compose  up employee-api employee-api-proxy mysql
+docker compose  up employee-api employee-api-proxy mysql -d
 cd eks/ui
 kubectl apply -f configmap.yaml
 kubectl apply -f deployments.yaml
