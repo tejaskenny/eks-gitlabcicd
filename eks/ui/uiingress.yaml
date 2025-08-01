@@ -4,7 +4,7 @@ metadata:
   name: ui-ingreee
   labels:
   namespace: famosdots
-  annotaitons:
+  annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 
 spec:
