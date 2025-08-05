@@ -2,9 +2,9 @@ apiVersion: v1
 kind: ConfigMap 
 metadata:
   name: employee-ui-config
-  namespace: famosdots
+  namespace: famousdots
 data:
   config.js: |
     window.APP_CONFIG = {
-      API_BASE_URL: "http://103.173.197.112:7080"
+      API_BASE_URL: "https://apifam.famousdots.com"
     };

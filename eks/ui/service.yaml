@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ui-service
-  namespace: famosdots
+  namespace: famousdots
   labels:
     env: "prod"
     setup: "ui"

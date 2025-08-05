@@ -1,0 +1,10 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata:
+  name: api-configmap
+  namespace: famousdots
+data: 
+  config.properties: |
+      db.url=jdbc:mysql://employee-mysql-service:3306/test_db
+      db.username=root
+      db.password=rootpass

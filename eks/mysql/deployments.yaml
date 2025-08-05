@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-mysql
+  namespace: famousdots
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-mysql
+  template:
+    metadata:
+      labels:
+        app: employee-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "rootpass"
+        - name: MYSQL_DATABASE
+          value: "test_db"
+        - name: MYSQL_USER
+          value: "tejas"
+        - name: MYSQL_PASSWORD
+          value: "secretpass"
+#        resources:
+#          requests:
+#            memory: "256Mi"
+#            cpu: "250m"
+#          limits:
+#            memory: "512Mi"
+ #           cpu: "500m"
+        volumeMounts:
+        - name: init-script-volume
+          mountPath: /docker-entrypoint-initdb.d/init.sql
+          subPath: init.sql
+      volumes:
+      - name: init-script-volume
+        configMap:
+          name: mysql-init-script

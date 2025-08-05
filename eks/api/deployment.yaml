@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: api-deploy
+  namespace: famousdots
+  labels:
+    setup: prod
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      setup: api
+      env: prod
+  template:
+    metadata:
+      labels:
+        env: prod
+        setup: "api"
+    spec:
+      containers:
+        - name: api 
+          image: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-api:latest  
+          ports:
+            - containerPort: 7080
+#          resources:
+#            limits:
+##              cpu: "200m"
+ #             memory: "256Mi"
+ #           requests:
+ #             cpu: "200m"
+ #             memory: "256Mi"
+          volumeMounts:
+          - name: config-property
+            mountPath: /app/config.properties
+            subPath: config.properties
+      volumes:
+      - name: config-property
+        configMap:
+          name: api-configmap        
+  

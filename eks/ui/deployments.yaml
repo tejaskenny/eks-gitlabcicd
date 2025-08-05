@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-deploy
-  namespace: famosdots
+  namespace: famousdots
   labels: 
     env: prod
 spec:
@@ -19,20 +19,21 @@ spec:
     spec:
       containers:
         - name: ui
-          image: famosdots-employee-ui
-          imagePullPolicy: Never
+          image: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-ui:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
-          resources:
-            limits:
-              cpu: "200m"
-              memory: "256Mi"
-            requests:
-              cpu: "200m"
-              memory: "256Mi"
+#          resources:
+#            limits:
+###              cpu: "200m"
+#              memory: "256Mi"
+#            requests:
+#              cpu: "200m"
+#              memory: "256Mi"
           env:
             - name: configs
               value: "prod"
+
           volumeMounts:
             - name: config-volume
               mountPath: /usr/share/nginx/html/config.js
