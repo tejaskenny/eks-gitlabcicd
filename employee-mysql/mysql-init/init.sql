@@ -1,9 +1,0 @@
-CREATE DATABASE IF NOT EXISTS test_db;
-
-USE test_db;
-CREATE TABLE IF NOT EXISTS employee (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
-    address VARCHAR(200)
-);
-

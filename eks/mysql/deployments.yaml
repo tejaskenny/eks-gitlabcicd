@@ -34,6 +34,16 @@ spec:
 #          limits:
 #            memory: "512Mi"
  #           cpu: "500m"
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          redinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
         volumeMounts:
         - name: init-script-volume
           mountPath: /docker-entrypoint-initdb.d/init.sql

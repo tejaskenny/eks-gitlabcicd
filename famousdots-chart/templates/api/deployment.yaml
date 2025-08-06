@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet 
+metadata:
+  name: {{ .Chart.Name }}-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    env: {{ .Values.api.config.ENV }}
+
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  serviceName: {{ .Chart.Name }}-api-headless
+  selector:
+    matchLabels:
+      app: {{ .Values.api.config.ENV | quote }}
+  template:
+    metadata:
+      labels:
+        env: {{ .Values.api.config.ENV | quote }}
+        setup: {{ .Chart.Name}}-api
+    spec:
+      containers:
+        - name: api 
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"  
+          imagePullPolicy: {{ .Values.api.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.api.service.targetPort }}
+          resources:
+            limits:
+              cpu: {{ .Values.api.resources.limits.cpu | quote }}
+             memory: {{ .Values.api.resources.limits.memory | quote }}
+           requests:
+             cpu: {{ .Values.api.resources.requests.cpu | quote }}
+             memory: {{ .Values.api.resources.requests.memory | quote }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.api.service.targetPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          redinessProbe:
+            tcpSocket:
+              port: {{ .Values.api.service.targetPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+          - name: config-property
+            mountPath: /app/config.properties
+            subPath: config.properties
+      volumes:
+      - name: config-property
+        configMap:
+          name: {{ .Values.api.configMapName }}     
+  

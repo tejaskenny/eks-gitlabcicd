@@ -1,12 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment 
+kind: StatefulSet
 metadata:
-  name: api-deploy
+  name: api-stateful
   namespace: famousdots
   labels:
     setup: prod
-
 spec:
+  serviceName: "api-headless"  # Headless service for stable network ID
   replicas: 1
   selector:
     matchLabels:
@@ -16,26 +16,28 @@ spec:
     metadata:
       labels:
         env: prod
-        setup: "api"
+        setup: api
     spec:
       containers:
-        - name: api 
-          image: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-api:latest  
+        - name: api
+          image: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-api:latest
           ports:
             - containerPort: 7080
-#          resources:
-#            limits:
-##              cpu: "200m"
- #             memory: "256Mi"
- #           requests:
- #             cpu: "200m"
- #             memory: "256Mi"
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
           volumeMounts:
-          - name: config-property
-            mountPath: /app/config.properties
-            subPath: config.properties
+            - name: config-property
+              mountPath: /app/config.properties
+              subPath: config.properties
       volumes:
-      - name: config-property
-        configMap:
-          name: api-configmap        
-  
+        - name: config-property
+          configMap:
+            name: api-configmap

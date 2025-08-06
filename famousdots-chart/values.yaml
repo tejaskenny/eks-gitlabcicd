@@ -1,0 +1,42 @@
+namespace: famousdots
+
+ui:
+  image:
+    repository: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-ui
+    tag: latest
+    pullPolicy: Always
+  replicaCount: 1
+  service:
+    port: 80
+    targetPort: 80
+    type: ClusterIp
+  config:
+    ENV: prod
+  configMapName: employee-ui-config
+  apiBaseUrl: https://apifam.famousdots.com
+  resources:
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+
+api: 
+  image:
+    repository: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-api
+    tag: latest
+  replicaCount: 1
+  service:
+    port: 80
+    targetPort: 7080
+    type: headless
+  config:
+    ENV: prod
+  configMapName: api-configmap
+  db:
+    host: employee-mysql-service
+    port: 3306
+    name: test_db
+    username: root
+    userpasswd: rootpass

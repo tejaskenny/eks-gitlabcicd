@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: famousdots-cron
+  namespace: famousdots
+spec:
+  schedule: "*/2 * * * *"  
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: famousdots-cron
+            image: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-cron:latest
+            imagePullPolicy: Always
+          restartPolicy: OnFailure
