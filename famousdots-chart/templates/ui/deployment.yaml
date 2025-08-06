@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Chart.Name }}-ui
+      env: {{ .Values.ui.config.ENV | quote }}
   template:
     metadata:
       labels:

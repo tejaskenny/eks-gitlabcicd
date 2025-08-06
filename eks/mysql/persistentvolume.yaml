@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume 
+metadata:
+  name: db-volume
+  namespace: famousdots
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes: 
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp2
+  awsElasticBlockStorage:
+    volumeID: vol-049d423cb62350c80
+    fstype: ext4

@@ -16,8 +16,12 @@ spec:
     metadata:
       labels:
         env: {{ .Values.api.config.ENV | quote }}
-        setup: {{ .Chart.Name}}-api
+        app: {{ .Chart.Name}}-api
     spec:
+      initContainers:
+        - name: wait-for-mysql
+          image: busybox:1.28
+          command: ['sh', '-c', 'until nc -z -v -w30 {{ .Values.mysql.serviceName }} {{ .Values.mysql.service.port }}; do echo "Waiting for MySQL..."; sleep 5; done']
       containers:
         - name: api 
           image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"  

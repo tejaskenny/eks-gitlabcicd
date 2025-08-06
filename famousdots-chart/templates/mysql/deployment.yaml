@@ -1,54 +1,58 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: employee-mysql
-  namespace: famousdots
+  name: {{ .Chart.Name }}-mysql
+  namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  serviceName: {{ .Chart.Name }}-mysql-headless
+  replicas: {{ .Values.mysql.replicaCount }}
   selector:
     matchLabels:
-      app: employee-mysql
+      app: {{ .Chart.Name }}-mysql
+      env: {{ .Values.mysql.config.ENV | quote }}
   template:
     metadata:
       labels:
-        app: employee-mysql
+        env: {{ .Values.mysql.config.ENV | quote }}
+        app: {{ .Chart.Name}}-mysql
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: "{{ .Values.mysql.image.repository}}:{{ .Values.mysql.image.tag}}"
         ports:
-        - containerPort: 3306
+        - containerPort: {{ .Values.mysql.service.targetPort }}
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "rootpass"
+          value: {{ .Values.mysql.rootPasswd | quote }}
         - name: MYSQL_DATABASE
-          value: "test_db"
-        - name: MYSQL_USER
-          value: "tejas"
-        - name: MYSQL_PASSWORD
-          value: "secretpass"
-#        resources:
-#          requests:
-#            memory: "256Mi"
-#            cpu: "250m"
-#          limits:
-#            memory: "512Mi"
- #           cpu: "500m"
+          value: {{ .Values.mysql.databse | quote }}
+        resources:
+          requests:
+            memory: {{ .Values.mysql.resources.requests.memory | quote }}
+            cpu: {{ .Values.mysql.resources.requests.cpu | quote }}
+          limits:
+            memory:  {{ .Values.mysql.resources.limits.memory | quote }}
+           cpu:  {{ .Values.mysql.resources.limits.cpu | quote }}
           livenessProbe:
             tcpSocket:
-              port: 80
+              port: {{ .Values.mysql.service.targetPort }}
             initialDelaySeconds: 30
             periodSeconds: 10
           redinessProbe:
             tcpSocket:
-              port: 80
+              port: {{ .Values.mysql.service.targetPort }}
             initialDelaySeconds: 10
             periodSeconds: 10
         volumeMounts:
+        - name: mysql-pvc
+          mountPath: /var/lib/mysql
         - name: init-script-volume
           mountPath: /docker-entrypoint-initdb.d/init.sql
           subPath: init.sql
       volumes:
+      - name: mysql-pvc
+          PersistentVolumeClaim:
+            name: {{ .Chart.Name }}-pvc
       - name: init-script-volume
         configMap:
-          name: mysql-init-script
+          name: {{ .Values.mysql.initScriptConfigMap }}

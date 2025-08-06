@@ -1,12 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: employee-mysql-service
-  namespace: famousdots
+  name: {{ .Chart.Name }}-mysql-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    env: {{ .Values.mysql.config.ENV }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.mysql.service.type }}
   ports:
-    - port: 3306
-      targetPort: 3306
+    - port: {{ .Values.mysql.service.port }}
+      targetPort: {{ .Values.mysql.service.targetPort }}
   selector:
-    app: employee-mysql
+    env: {{ .Values.mysql.config.ENV}}
+    app: {{ .Chart.Name}}-mysql

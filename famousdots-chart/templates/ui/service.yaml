@@ -7,8 +7,9 @@ metadata:
     env: {{ .Values.ui.config.ENV }}
 spec:
   type: {{ .Values.ui.service.type }}
-  selector:
-    app: {{ .Chart.Name}}-ui
   ports:
     - port: {{ .Values.ui.service.port }}
       targetPort: {{ .Values.ui.service.targetPort }}
+  selector:
+    env: {{ .Values.ui.config.ENV }}
+    app: {{ .Chart.Name}}-ui
