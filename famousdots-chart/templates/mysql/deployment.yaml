@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Chart.Name }}-mysql
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   serviceName: {{ .Chart.Name }}-mysql-headless
   replicas: {{ .Values.mysql.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}-mysql
-      env: {{ .Values.mysql.config.ENV | quote }}
+      env: {{ .Values.global.env | quote }}
   template:
     metadata:
       labels:
-        env: {{ .Values.mysql.config.ENV | quote }}
+        env: {{ .Values.global.env | quote }}
         app: {{ .Chart.Name}}-mysql
     spec:
       containers:
@@ -25,34 +25,33 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: {{ .Values.mysql.rootPasswd | quote }}
         - name: MYSQL_DATABASE
-          value: {{ .Values.mysql.databse | quote }}
+          value: {{ .Values.mysql.database | quote }}
         resources:
-          requests:
-            memory: {{ .Values.mysql.resources.requests.memory | quote }}
-            cpu: {{ .Values.mysql.resources.requests.cpu | quote }}
           limits:
             memory:  {{ .Values.mysql.resources.limits.memory | quote }}
-           cpu:  {{ .Values.mysql.resources.limits.cpu | quote }}
+            cpu:  {{ .Values.mysql.resources.limits.cpu | quote }}
           livenessProbe:
             tcpSocket:
               port: {{ .Values.mysql.service.targetPort }}
             initialDelaySeconds: 30
             periodSeconds: 10
-          redinessProbe:
+          readinessProbe:
             tcpSocket:
               port: {{ .Values.mysql.service.targetPort }}
             initialDelaySeconds: 10
             periodSeconds: 10
         volumeMounts:
-        - name: mysql-pvc
+        - name: mysql-empty
           mountPath: /var/lib/mysql
         - name: init-script-volume
           mountPath: /docker-entrypoint-initdb.d/init.sql
           subPath: init.sql
       volumes:
-      - name: mysql-pvc
-          PersistentVolumeClaim:
-            name: {{ .Chart.Name }}-pvc
+      - name: mysql-empty
+        emptyDitr: {}
+#      - name: mysql-pvc
+#        persistentVolumeClaim: 
+#          claimName: {{ .Chart.Name }}-pvc
       - name: init-script-volume
         configMap:
           name: {{ .Values.mysql.initScriptConfigMap }}

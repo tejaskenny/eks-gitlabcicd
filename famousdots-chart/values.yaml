@@ -1,4 +1,6 @@
 namespace: famousdots
+global:
+  env: prod
 
 ui:
   image:
@@ -9,9 +11,7 @@ ui:
   service:
     port: 80
     targetPort: 80
-    type: ClusterIp
-  config:
-    ENV: prod
+    type: ClusterIP
   configMapName: employee-ui-config
   apiBaseUrl: https://apifam.famousdots.com
   resources:
@@ -30,9 +30,7 @@ api:
   service:
     port: 80
     targetPort: 7080
-    type: headless
-  config:
-    ENV: prod
+    type: ClusterIP
   configMapName: api-configmap
   db:
     host: employee-mysql-service
@@ -53,6 +51,8 @@ mysql:
     repository: mysql
     tag: 5.7
   replicaCount: 1
+  rootPasswd: rootpass
+  database: test_db
   resources:
     limits:
       cpu: "200m"
@@ -60,9 +60,8 @@ mysql:
     requests:
       cpu: "200m"
       memory: "256Mi"
-  config:
-    ENV: prod
   initScriptConfigMap: mysql-configmap
+  data:
   initSql: |
     CREATE DATABASE IF NOT EXISTS test_db;
 
@@ -75,9 +74,14 @@ mysql:
   service:
     port: 3306
     targetPort: 3306
-    type: headless
+    type: ClusterIP
   volume:
-    volumeID: vol-049d423cb62350c80
+    volumeID: vol-0f76830bc59b070f8
     storageClassName: gp2
     storageSize: 1Gi
     
+ingress:
+  enabled: true
+  uiHost: uifam.famousdots.com
+  apiHost: apifam.famousdots.com
+  certificateArn: arn:aws:acm:eu-north-1:571631915203:certificate/3726c6e6-c6de-45fc-bb70-e76497b8245e   

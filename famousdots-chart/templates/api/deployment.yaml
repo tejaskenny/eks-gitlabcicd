@@ -1,56 +1,54 @@
 apiVersion: apps/v1
-kind: StatefulSet 
+kind: StatefulSet
 metadata:
   name: {{ .Chart.Name }}-api
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
-    env: {{ .Values.api.config.ENV }}
-
+    env: {{ .Values.global.env }}
 spec:
   replicas: {{ .Values.api.replicaCount }}
   serviceName: {{ .Chart.Name }}-api-headless
   selector:
     matchLabels:
-      app: {{ .Values.api.config.ENV | quote }}
+      app: {{ .Chart.Name }}-api
   template:
     metadata:
       labels:
-        env: {{ .Values.api.config.ENV | quote }}
-        app: {{ .Chart.Name}}-api
+        env: {{ .Values.global.env | quote }}
+        app: {{ .Chart.Name }}-api
     spec:
       initContainers:
         - name: wait-for-mysql
           image: busybox:1.28
-          command: ['sh', '-c', 'until nc -z -v -w30 {{ .Values.mysql.serviceName }} {{ .Values.mysql.service.port }}; do echo "Waiting for MySQL..."; sleep 5; done']
+          command:
+            - sh
+            - -c
+            - echo "Waiting for MySQL..."; done
       containers:
-        - name: api 
-          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"  
+        - name: api
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"
           imagePullPolicy: {{ .Values.api.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.api.service.targetPort }}
           resources:
             limits:
               cpu: {{ .Values.api.resources.limits.cpu | quote }}
-             memory: {{ .Values.api.resources.limits.memory | quote }}
-           requests:
-             cpu: {{ .Values.api.resources.requests.cpu | quote }}
-             memory: {{ .Values.api.resources.requests.memory | quote }}
+              memory: {{ .Values.api.resources.limits.memory | quote }}
           livenessProbe:
             tcpSocket:
               port: {{ .Values.api.service.targetPort }}
             initialDelaySeconds: 30
             periodSeconds: 10
-          redinessProbe:
+          readinessProbe:
             tcpSocket:
               port: {{ .Values.api.service.targetPort }}
             initialDelaySeconds: 10
             periodSeconds: 10
           volumeMounts:
-          - name: config-property
-            mountPath: /app/config.properties
-            subPath: config.properties
+            - name: config-property
+              mountPath: /app/config.properties
+              subPath: config.properties
       volumes:
-      - name: config-property
-        configMap:
-          name: {{ .Values.api.configMapName }}     
-  
+        - name: config-property
+          configMap:
+            name: {{ .Values.api.configMapName }}
