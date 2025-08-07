@@ -27,7 +27,7 @@ api:
     repository: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-api
     tag: latest
     pullPolicy: Always
-  replicaCount: 1
+  replicaCount: 2
   
   service:
     port: 80
