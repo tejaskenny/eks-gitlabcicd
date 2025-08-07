@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata: 
-    name: {{ .Release.Namespace }}
-    labels:
-        cluster: {{ .Chart.Name }}
-    annotations:
-        meta.helm.sh/release-name: famousdots
-        meta.helm.sh/release-namespace: famousdots

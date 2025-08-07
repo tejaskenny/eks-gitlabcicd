@@ -30,16 +30,16 @@ spec:
           limits:
             memory:  {{ .Values.mysql.resources.limits.memory | quote }}
             cpu:  {{ .Values.mysql.resources.limits.cpu | quote }}
-          livenessProbe:
-            tcpSocket:
-              port: {{ .Values.mysql.service.targetPort }}
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            tcpSocket:
-              port: {{ .Values.mysql.service.targetPort }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.mysql.service.targetPort }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.mysql.service.targetPort }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
         volumeMounts:
         - name: mysql-empty
           mountPath: /var/lib/mysql
@@ -48,7 +48,7 @@ spec:
           subPath: init.sql
       volumes:
       - name: mysql-empty
-        emptyDitr: {}
+        emptyDir: {}
 #      - name: mysql-pvc
 #        persistentVolumeClaim: 
 #          claimName: {{ .Chart.Name }}-pvc

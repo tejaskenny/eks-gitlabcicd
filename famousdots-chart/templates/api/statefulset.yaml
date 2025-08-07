@@ -23,7 +23,14 @@ spec:
           command:
             - sh
             - -c
-            - echo "Waiting for MySQL..."; done
+            - >
+              echo "Waiting for MySQL...";
+              until nc -z -v -w30 {{ .Chart.Name }}-mysql-service 3306;
+              do
+                echo "Waiting for MySQL at {{ .Chart.Name }}-mysql-service:3306...";
+                sleep 5;
+              done;
+              echo "MySQL is up!";
       containers:
         - name: api
           image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"

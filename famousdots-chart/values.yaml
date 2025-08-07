@@ -26,7 +26,9 @@ api:
   image:
     repository: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-api
     tag: latest
+    pullPolicy: Always
   replicaCount: 1
+  
   service:
     port: 80
     targetPort: 7080
@@ -50,6 +52,7 @@ mysql:
   image:
     repository: mysql
     tag: 5.7
+    pullPolicy: Always
   replicaCount: 1
   rootPasswd: rootpass
   database: test_db

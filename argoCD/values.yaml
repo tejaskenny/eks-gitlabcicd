@@ -1,0 +1,10 @@
+server:
+  service:
+    type: LoadBalancer
+
+configs:
+  params:
+    server.insecure: true  # For demo only, disables TLS
+dex:
+  enabled: false
+

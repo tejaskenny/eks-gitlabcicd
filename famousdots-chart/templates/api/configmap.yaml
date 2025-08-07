@@ -5,6 +5,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data: 
   config.properties: |
-      db.url=jdbc:mysql://{{ .Values.api.db.host }}:{{ .Values.api.db.port }}/{{ .Values.api.db.name }}
+      db.url=jdbc:mysql://{{ .Chart.Name }}-mysql-service:{{ .Values.mysql.service.port }}/{{ .Values.api.db.name }}
       db.username={{ .Values.api.db.username }}
       db.password={{ .Values.api.db.userpasswd }}
