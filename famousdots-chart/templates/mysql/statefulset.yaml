@@ -3,6 +3,8 @@ kind: StatefulSet
 metadata:
   name: {{ .Chart.Name }}-mysql
   namespace: {{ .Release.Namespace }}
+  labels:
+    env: {{ .Values.global.env }}
 spec:
   serviceName: {{ .Chart.Name }}-mysql-headless
   replicas: {{ .Values.mysql.replicaCount }}
