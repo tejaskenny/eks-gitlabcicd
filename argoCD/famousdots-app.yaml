@@ -4,9 +4,9 @@ metadata:
   name: famousdots
   namespace: argocd
   labels:
-    setup: famousdots
+    env: live
 spec:
-  project: default
+  project: famousdots
   source:
     repoURL: https://github.com/tejaskenny/famosdots.git
     targetRevision: HEAD
