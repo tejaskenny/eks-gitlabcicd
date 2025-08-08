@@ -82,7 +82,13 @@ mysql:
     volumeID: vol-0f76830bc59b070f8
     storageClassName: gp2
     storageSize: 1Gi
-    
+
+cronjob:
+  image:
+    repository: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-cron
+    tag: latest
+  schedule: "*/2 * * * *"
+  
 ingress:
   enabled: true
   uiHost: uifam.famousdots.com
