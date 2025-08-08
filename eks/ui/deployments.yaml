@@ -11,6 +11,11 @@ spec:
     matchLabels:
       env: prod
       setup: ui
+
+
+
+
+      #######################   POD
   template:
     metadata:
       labels:

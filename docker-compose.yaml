@@ -3,12 +3,12 @@ version: "3.8"
 services:
   employee-api:
     build:
-      context: ./jdbc-api-demo
+      context: ./employee-api
     container_name: employee-api
     ports:
       - "7080:7080"
     volumes:
-      - ./jdbc-api-demo/config.properties:/app/config.properties
+      - ./employee-api/config.properties:/app/config.properties
     networks:
       - employee-net
     depends_on:
@@ -16,12 +16,12 @@ services:
 
   employee-ui:
     build:
-      context: ./employee-ui-simple
+      context: ./employee-ui
     container_name: employee-ui
     ports:
       - "7000:80"
     volumes:
-      - ./employee-ui-simple/config/config.js:/usr/share/nginx/html/config.js
+      - ./employee-ui/config/config.js:/usr/share/nginx/html/config.js
     networks:
       - employee-net
 
