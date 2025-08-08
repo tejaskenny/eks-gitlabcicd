@@ -17,15 +17,6 @@ spec:
         env: {{ .Values.global.env | quote }}
         app: {{ .Chart.Name }}-ui
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: topology.kubernetes.io/zone
-                    operator: In
-                    values:
-                      - eu-north-1a
       containers:
         - name: log-side-car
           image: busybox
@@ -58,7 +49,7 @@ spec:
       volumes:
         - name: pvc-sidecar-nginxlogs
           persistentVolumeClaim:
-            claimName: {{ .Chart.Name }}-pvc-nginx
+            claimName: {{ .Chart.Name }}-pvc
         - name: config-volume
           configMap:
             name: {{ .Values.ui.configMapName }}
