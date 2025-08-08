@@ -16,10 +16,10 @@ ui:
   apiBaseUrl: https://apifam.famousdots.com
   resources:
     limits:
-      cpu: "200m"
+      cpu: "100m"
       memory: "256Mi"
     requests:
-      cpu: "200m"
+      cpu: "100m"
       memory: "256Mi"
 
 api: 
@@ -42,10 +42,10 @@ api:
     userpasswd: rootpass
   resources:
     limits:
-      cpu: "200m"
+      cpu: "100m"
       memory: "256Mi"
     requests:
-      cpu: "200m"
+      cpu: "100m"
       memory: "256Mi"
       
 mysql:
@@ -58,10 +58,10 @@ mysql:
   database: test_db
   resources:
     limits:
-      cpu: "200m"
+      cpu: "100m"
       memory: "256Mi"
     requests:
-      cpu: "200m"
+      cpu: "100m"
       memory: "256Mi"
   initScriptConfigMap: mysql-configmap
   data:

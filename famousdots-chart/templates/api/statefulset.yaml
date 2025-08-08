@@ -38,6 +38,9 @@ spec:
           ports:
             - containerPort: {{ .Values.api.service.targetPort }}
           resources:
+            requests:
+              cpu:  {{ .Values.api.resources.requests.cpu | quote }}
+              memory:  {{ .Values.api.resources.requests.memory | quote }}
             limits:
               cpu: {{ .Values.api.resources.limits.cpu | quote }}
               memory: {{ .Values.api.resources.limits.memory | quote }}

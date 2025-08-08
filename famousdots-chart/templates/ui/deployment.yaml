@@ -24,12 +24,12 @@ spec:
           ports:
             - containerPort: {{ .Values.ui.service.targetPort }}
           resources:
+            requests:
+              cpu:  {{ .Values.ui.resources.requests.cpu | quote }}
+              memory:  {{ .Values.ui.resources.requests.memory | quote }}
             limits:
               cpu: {{ .Values.ui.resources.limits.cpu | quote }}
               memory: {{ .Values.ui.resources.limits.memory | quote }}
-            requests:
-              cpu: {{ .Values.ui.resources.requests.cpu | quote }}
-              memory: {{ .Values.ui.resources.requests.memory | quote }}
           env:
             - name: config
               value: {{ .Values.global.env | quote }}

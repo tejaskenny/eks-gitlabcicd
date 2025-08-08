@@ -29,6 +29,9 @@ spec:
         - name: MYSQL_DATABASE
           value: {{ .Values.mysql.database | quote }}
         resources:
+          requests:
+            cpu:  {{ .Values.mysql.resources.requests.cpu | quote }}
+            memory:  {{ .Values.mysql.resources.requests.memory | quote }}
           limits:
             memory:  {{ .Values.mysql.resources.limits.memory | quote }}
             cpu:  {{ .Values.mysql.resources.limits.cpu | quote }}
