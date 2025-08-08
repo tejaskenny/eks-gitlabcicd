@@ -8,9 +8,10 @@ spec:
     jobTemplate:
         spec:
             template:
-                containers:
-                -   name: cron
-                    image: "{{ .Values.cronjob.image.repository }}: {{ .Values.cronjob.image.tag }}"
-                    imagePullPolicy: Always
-                restartPolicy: OnFailure
+                spec:
+                    containers:
+                    -   name: cron
+                        image: "{{ .Values.cronjob.image.repository }}: {{ .Values.cronjob.image.tag }}"
+                        imagePullPolicy: Always
+                    restartPolicy: OnFailure
                 
