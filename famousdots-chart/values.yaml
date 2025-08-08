@@ -47,6 +47,10 @@ api:
     requests:
       cpu: "100m"
       memory: "256Mi"
+  volume:
+    volumeID: vol-074357ed638e86cba
+    storageClassName: gp2
+    storageSize: 1Gi
       
 mysql:
   image:
@@ -77,10 +81,7 @@ mysql:
     port: 3306
     targetPort: 3306
     type: ClusterIP
-  volume:
-    volumeID: vol-0f76830bc59b070f8
-    storageClassName: gp2
-    storageSize: 1Gi
+
 
 cronjob:
   image:

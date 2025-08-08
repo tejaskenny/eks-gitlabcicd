@@ -6,7 +6,7 @@ metadata:
   labels:
     env: live
 spec:
-  project: famousdots
+  project: default
   source:
     repoURL: https://github.com/tejaskenny/famosdots.git
     targetRevision: HEAD

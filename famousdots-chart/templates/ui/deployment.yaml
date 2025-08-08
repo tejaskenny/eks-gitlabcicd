@@ -18,6 +18,15 @@ spec:
         app: {{ .Chart.Name}}-ui
     spec:
       containers:
+        - name: log-side-car
+          iamge: busybox
+          command: ["/bin/sh", "-c"]
+          args:
+          - >
+            tail -F *.log >> /mnt/logs/ui-logs-$(date +%F).log
+          volumeMounts:
+          - name: pvc-sidecar-nginxlogs
+            mountPath: /mnt/logs
         - name: ui
           image: "{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}"
           imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
@@ -39,6 +48,9 @@ spec:
               mountPath: /usr/share/nginx/html/config.js
               subPath: config.js
       volumes:
+        - name: pvc-sidecar-nginxlogs
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}-pvc-nginx
         - name: config-volume
           configMap:
             name: {{ .Values.ui.configMapName }}

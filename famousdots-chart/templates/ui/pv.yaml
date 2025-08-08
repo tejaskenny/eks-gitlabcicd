@@ -5,12 +5,12 @@ metadata:
     namespace: {{ .Release.Namespace }}
 spec:
     capacity:
-        storage: {{ .Values.mysql.volume.storageSize }}
+        storage: {{ .Values.api.volume.storageSize }}
     volumeMode: Filesystem
     accessModes:
         -   ReadWriteOnce
     persistentVolumeReclaimPolicy: Retain
-    storageClassName: {{ .Values.mysql.volume.storageClassName }}
+    storageClassName: {{ .Values.api.volume.storageClassName }}
     awsElasticBlockStore:
-        volumeID: {{ .Values.mysql.volume.volumeID}}
+        volumeID: {{ .Values.api.volume.volumeID}}
         fsType: ext4

@@ -1,12 +1,15 @@
 # Use lightweight NGINX image
 FROM nginx:alpine
 
-# Copy your static HTML file to the NGINX default directory
+# Copy static HTML file
 COPY index.html /usr/share/nginx/html/index.html
+
+# Copy entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Expose port 80
 EXPOSE 80
 
-# Start NGINX
-CMD ["nginx", "-g", "daemon off;"]
-
+# Use custom entrypoint
+ENTRYPOINT ["/docker-entrypoint.sh"]

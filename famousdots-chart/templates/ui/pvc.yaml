@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-    name: {{ .Chart.Name }}-pvc
+    name: {{ .Chart.Name }}-pvc-nginx
     namespace: {{ .Release.Namespace }}
 spec:
     accessModes:
         -   ReadWriteOnce
     resources:
         requests:
-            storage: {{ .Values.mysql.volume.storageSize }}
-    storageClassName: {{ .Values.mysql.volume.storageClassName }}
+            storage: {{ .Values.api.volume.storageSize }}
+    storageClassName: {{ .Values.api.volume.storageClassName }}
