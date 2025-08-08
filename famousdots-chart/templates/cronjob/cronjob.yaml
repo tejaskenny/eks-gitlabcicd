@@ -11,7 +11,7 @@ spec:
                 spec:
                     containers:
                     -   name: cron
-                        image: "{{ .Values.cronjob.image.repository }}: {{ .Values.cronjob.image.tag }}"
+                        image: "{{ .Values.cronjob.image.repository }}:{{ .Values.cronjob.image.tag }}"
                         imagePullPolicy: Always
                     restartPolicy: OnFailure
                 
