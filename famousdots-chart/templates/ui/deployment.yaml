@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: log-side-car
-          iamge: busybox
+          image: busybox
           command: ["/bin/sh", "-c"]
           args:
           - >
