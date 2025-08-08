@@ -34,10 +34,6 @@ api:
     targetPort: 7080
     type: ClusterIP
   configMapName: api-configmap
-  configmapdata: |
-    db.url=jdbc:mysql://{{ .Chart.Name }}-mysql-service:{{ .Values.mysql.service.port }}/{{ .Values.cronjob.db.name }}
-    db.username={{ .Values.cronjob.db.username }}
-    db.password={{ .Values.cronjob.db.userpasswd }}
   db:
     host: employee-mysql-service
     port: 3306
@@ -92,10 +88,6 @@ cronjob:
     tag: latest
   schedule: "*/2 * * * *"
   configMapName: cronjob-configmap
-  configmapdata: |
-      db.url=jdbc:mysql://{{ .Chart.Name }}-mysql-service:{{ .Values.mysql.service.port }}/{{ .Values.cronjob.db.name }}
-      db.username={{ .Values.cronjob.db.username }}
-      db.password={{ .Values.cronjob.db.userpasswd }}
   
 ingress:
   enabled: true
