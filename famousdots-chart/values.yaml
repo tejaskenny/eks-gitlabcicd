@@ -88,6 +88,12 @@ cronjob:
     tag: latest
   schedule: "*/2 * * * *"
   configMapName: cronjob-configmap
+  db:
+    host: employee-mysql-service
+    port: 3306
+    name: test_db
+    username: root
+    userpasswd: rootpass
   
 ingress:
   enabled: true
