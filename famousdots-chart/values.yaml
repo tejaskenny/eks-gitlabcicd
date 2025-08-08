@@ -21,6 +21,9 @@ ui:
     requests:
       cpu: "100m"
       memory: "256Mi"
+  volume:
+    storageClassName: gp2-ebs-sc
+    storageSize: 1Gi
 
 api: 
   image:
@@ -47,10 +50,7 @@ api:
     requests:
       cpu: "100m"
       memory: "256Mi"
-  volume:
-    volumeID: vol-0d1c6b5bc5cbfd413
-    storageClassName: gp2
-    storageSize: 1Gi
+
       
 mysql:
   image:

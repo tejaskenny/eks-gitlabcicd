@@ -8,5 +8,5 @@ spec:
         -   ReadWriteOnce
     resources:
         requests:
-            storage: {{ .Values.api.volume.storageSize }}
-    storageClassName: {{ .Values.api.volume.storageClassName }}
+            storage: {{ .Values.ui.volume.storageSize }}
+    storageClassName: {{ .Values.ui.volume.storageClassName }}
