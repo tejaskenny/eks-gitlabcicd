@@ -13,5 +13,14 @@ spec:
                     -   name: cron
                         image: "{{ .Values.cronjob.image.repository }}:{{ .Values.cronjob.image.tag }}"
                         imagePullPolicy: Always
+                        volumeMounts:
+                        -   name: config-properties-file
+                            mountPath: /app/config.properties
+                            subPath: config.properties
+                    volumes:
+                    -   name: config-properties-file
+                        configMap:
+                            name: {{ .Values.cronjob.configMapName }}
                     restartPolicy: OnFailure
+
                 

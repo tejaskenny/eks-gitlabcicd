@@ -1,7 +1,7 @@
 apiVersion: v1 
 kind: ConfigMap 
 metadata:
-  name: {{ .Values.api.configMapName }}
+  name: {{ .Values.cronjob.configMapName }}
   namespace: {{ .Release.Namespace }}
 data: 
   config.properties: |

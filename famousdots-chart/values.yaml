@@ -34,6 +34,10 @@ api:
     targetPort: 7080
     type: ClusterIP
   configMapName: api-configmap
+  configmapdata: |
+    db.url=jdbc:mysql://{{ .Chart.Name }}-mysql-service:{{ .Values.mysql.service.port }}/{{ .Values.cronjob.db.name }}
+    db.username={{ .Values.cronjob.db.username }}
+    db.password={{ .Values.cronjob.db.userpasswd }}
   db:
     host: employee-mysql-service
     port: 3306
@@ -64,7 +68,6 @@ mysql:
       cpu: "100m"
       memory: "256Mi"
   initScriptConfigMap: mysql-configmap
-  data:
   initSql: |
     CREATE DATABASE IF NOT EXISTS test_db;
 
@@ -88,6 +91,11 @@ cronjob:
     repository: 571631915203.dkr.ecr.eu-north-1.amazonaws.com/famousdots-cron
     tag: latest
   schedule: "*/2 * * * *"
+  configMapName: cronjob-configmap
+  configmapdata: |
+      db.url=jdbc:mysql://{{ .Chart.Name }}-mysql-service:{{ .Values.mysql.service.port }}/{{ .Values.cronjob.db.name }}
+      db.username={{ .Values.cronjob.db.username }}
+      db.password={{ .Values.cronjob.db.userpasswd }}
   
 ingress:
   enabled: true
