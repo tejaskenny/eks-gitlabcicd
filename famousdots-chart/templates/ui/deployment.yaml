@@ -19,12 +19,19 @@ spec:
     spec:
 
       containers:
-        - name: log-side-car
-          image: busybox
+        - name: s3-uploader
+          image: amazon/aws-cli:2.15.16
           command: ["/bin/sh", "-c"]
           args:
             - >
-              tail -F /mnt/logs/*.log >> /mnt/logs/ui-logs-$(date +%F).log
+              while true;
+              do
+                aws s3 cp /mnt/logs/*.log s3://ekssthreebucket/nginxlog/ --recursive;
+                sleep 60;
+              done
+          env:
+            - name: AWS_REGION
+              value: eu-north-1
           volumeMounts:
             - name: pvc-sidecar-nginxlogs
               mountPath: /mnt/logs
