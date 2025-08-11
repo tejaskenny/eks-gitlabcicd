@@ -24,7 +24,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - >
-              tail -F *.log >> /mnt/logs/ui-logs-$(date +%F).log
+              tail -F /mnt/logs/*.log >> /mnt/logs/ui-logs-$(date +%F).log
           volumeMounts:
             - name: pvc-sidecar-nginxlogs
               mountPath: /mnt/logs
@@ -47,6 +47,8 @@ spec:
             - name: config-volume
               mountPath: /usr/share/nginx/html/config.js
               subPath: config.js
+            - name: pvc-sidecar-nginxlogs
+              mountPath: /mnt/logs
       volumes:
         - name: pvc-sidecar-nginxlogs
           persistentVolumeClaim:
