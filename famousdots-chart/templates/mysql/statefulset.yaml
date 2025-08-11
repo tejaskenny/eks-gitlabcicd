@@ -24,10 +24,17 @@ spec:
         ports:
         - containerPort: {{ .Values.mysql.service.targetPort }}
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: {{ .Values.mysql.rootPasswd | quote }}
-        - name: MYSQL_DATABASE
-          value: {{ .Values.mysql.database | quote }}
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_ROOT_PASSWORD
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_DATABASE
+
         resources:
           requests:
             cpu:  {{ .Values.mysql.resources.requests.cpu | quote }}
