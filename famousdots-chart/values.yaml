@@ -22,7 +22,7 @@ ui:
       cpu: "100m"
       memory: "256Mi"
   volume:
-    storageClassName: gp2-ebs-sc
+    storageClassName: gp3-sc
     storageSize: 1Gi
 
 api: 
