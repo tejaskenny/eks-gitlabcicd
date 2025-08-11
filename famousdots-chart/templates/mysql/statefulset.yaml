@@ -27,12 +27,12 @@ spec:
           - name: MYSQL_ROOT_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mysql-secret
+                name: {{ .Chart.Name }}-secret-mysql
                 key: MYSQL_ROOT_PASSWORD
           - name: MYSQL_DATABASE
             valueFrom:
               secretKeyRef:
-                name: mysql-secret
+                name: {{ .Chart.Name }}-secret-mysql
                 key: MYSQL_DATABASE
 
         resources:
