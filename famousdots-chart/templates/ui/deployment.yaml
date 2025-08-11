@@ -48,9 +48,9 @@ spec:
               mountPath: /usr/share/nginx/html/config.js
               subPath: config.js
       volumes:
-       - name: pvc-sidecar-nginxlogs
-         persistentVolumeClaim:
-           claimName: {{ .Chart.Name }}-pvc
+        - name: pvc-sidecar-nginxlogs
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}-pvc
         - name: config-volume
           configMap:
             name: {{ .Values.ui.configMapName }}
