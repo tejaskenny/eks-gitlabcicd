@@ -35,7 +35,7 @@ services:
       - API_BACKEND_URL=http://employee-api:7080
     networks:
       - employee-net
-    depends_on:
+    depends_on: 
       - employee-api
 
   mysql:

@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  famousdots-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-08-13T17:46:42.673065137+05:30"
+    description: A Helm chart for Kubernetes
+    digest: 434b9c1494550e9b78ef625f5d4900d7d5f6a86f7a03730b1832fd40409157e2
+    name: famousdots-chart
+    type: application
+    urls:
+    - famousdots-chart-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-08-13T17:46:42.672383014+05:30"

@@ -1,0 +1,62 @@
+stages:
+  - build
+  - test
+  - deploy 
+
+variables:
+  GIT_STRATEGY: clone
+  ECR_REGISTRY: "571631915203.dkr.ecr.eu-north-1.amazonaws.com"
+  TEST_REGISTRY: "local.docker.repository.com"
+  IMAGE_NAME: "employee-ui"
+
+build_image:
+  stage: buildimage
+  script: |
+    - docker buid -t ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
+  rules:
+    - if: "${$CI_COMMIT_BRANCH} == 'beta' || ${$CI_COMMIT_BRANCH} =~ 'beta_*'"
+
+
+deploy_image:
+  stage: imagepush
+  dependencies: build_project
+  script: | 
+    - aws ecr get-login-password --region eu-north-1  | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+    - docker tag ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker push ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
+  rules:
+    - if: "${$CI_COMMIT_BRANCH} == 'beta' || ${$CI_COMMIT_BRANCH} =~ 'beta_*'"
+build_test_image:
+  stage: deploy
+  variables:
+    HELM_CHART_VALUES: "ingress.enabled=false"
+    HELM_CHART_REPOSITORY_URL: "https://famousdots-helm-repo.s3.eu-north-1.amazonaws.com"
+    HELM_CHART_NAME: famousdots
+    ENV: 
+    RELEASE_NAME: "famousdots"
+    RELEASE_NAME_SUFFIX: "beta"
+    TARGET_AWS_PROFILE:
+    K8S_NAMESPACE: "famousdots"
+  script: | 
+    docker tag ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
+    docker push ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA} ${TEST_REGISTRY}/${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
+    echo "namespace : $K8S_NAMESPACE"
+    echo "chart repository url : $HELM_CHART_REPOSITORY_URL"
+    echo "chart name : $HELM_CHART_NAME"    
+    echo "version : $BUILD_VERSION"
+    echo "env : $ENV"
+    echo "release-name-prefix : $HELM_RELEASE_NAME_PREFIX"
+    echo "release-name : $RELEASE_NAME"
+    echo "release-name-suffix : $RELEASE_NAME_SUFFIX"
+    helm upgrade --install \
+      "${HELM_RELEASE_NAME_PREFIX}${RELEASE_NAME}${HELM_RELEASE_NAME_SUFFIX}" \
+      "$HELM_CHART_NAME" \
+      --repo "$HELM_CHART_REPOSITORY_URL" \
+      --namespace "$K8S_NAMESPACE" \
+      --version "$BUILD_VERSION" \
+      --set $(eval echo "$HELM_CHART_VALUES") \
+      --create-namespace \
+      --reset-values
+
+  rules:
+    - if: "${$CI_COMMIT_BRANCH} == 'beta' || ${$CI_COMMIT_BRANCH} =~ 'beta_*'"

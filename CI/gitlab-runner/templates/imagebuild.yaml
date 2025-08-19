@@ -1,0 +1,17 @@
+stages:
+    -   build
+
+
+variables:
+    MAVEN_BUILD_COMMAND: "mvn clean package -DskipTests"
+
+.build_maven:
+    stage: build
+    script:
+        -   echo "building Maven project"
+        -   $MAVEN_BUILD_COMMAND
+rules:
+  - if: '$CI_PIPELINE_SOURCE == "web" || $CI_COMMIT_BRANCH == "release"'
+    when: always
+  - when: never
+
